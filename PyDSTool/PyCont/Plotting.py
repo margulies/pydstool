@@ -344,7 +344,7 @@ class pargs(args):
                 plt.draw()
             elif 'axes' in self.keys():
                 plt.figure(self.axes.figure.number)
-                #Would like to say: plt.axes(self.axes)  Doesn't work, though.
+                #Would like to say: plt.sca(self.axes)  Doesn't work, though.
                 plt.draw()
             elif 'curve' in self.keys():
                 plt.figure(self.curve[0].figure.number)
@@ -383,7 +383,7 @@ class pargs(args):
                         recursive_clean = False
                 elif 'axes' in v:
                     try:
-                        fig_axes = plt.axes(v.axes)
+                        fig_axes = plt.sca(v.axes)
                     except:
                         fig_axes = None
 
@@ -432,7 +432,7 @@ class pargs(args):
             elif 'axes' in self:
                 title = self.axes.title.get_text()
                 self.axes.clear()
-                plt.axes(self.axes)
+                plt.sca(self.axes)
                 plt.title(title)
                 remove = [k for k in self.keys() if k != 'axes']
                 if refresh:
@@ -670,10 +670,10 @@ def initializeDisplay(plot, figure=None, axes=None):
         cal = axes
         if cal not in plot[cfl].keys():
             plot[cfl][cal] = pargs()
-            plot[cfl][cal].axes = plt.axes()
+            plot[cfl][cal].axes = plt.sca()
             plot[cfl][cal].axes.set_title(cal)
 
-    plt.axes(plot[cfl][cal].axes)
+    plt.sca(plot[cfl][cal].axes)
 
     plot._cfl = cfl
     plot._cal = cal

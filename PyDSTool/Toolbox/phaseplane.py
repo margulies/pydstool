@@ -1005,7 +1005,7 @@ def find_nullclines(gen, xname, yname, subdomain=None, fps=None, n=10,
                         y_null_part = crop_2D(array([P_y['null_curve_y'].sol[xname],
                                                      P_y['null_curve_y'].sol[yname]]).T,
                                               xinterval, yinterval)
-                        in_subdom = len(y_null_part)>0
+                        in_subom = len(y_null_part)>0
                         done = num_points > 15*loop_step
 
             # BACKWARD ###########
@@ -1042,7 +1042,7 @@ def find_nullclines(gen, xname, yname, subdomain=None, fps=None, n=10,
                         y_null_part = crop_2D(array([P_y['null_curve_y'].sol[xname],
                                                      P_y['null_curve_y'].sol[yname]]).T,
                                               xinterval, yinterval)
-                        in_subdom = len(y_null_part)>0
+                        in_subom = len(y_null_part)>0
                         done = num_points > 15*loop_step
 
             # overwrite y_null from fsolve, pre-PyCont
@@ -1346,8 +1346,8 @@ def find_fixedpoints(gen, subdomain=None, n=5, maxsearch=1000, eps=1e-8,
     xtol = eps/10.
     def array_to_point(a):
         return Point(dict(zip(x0_names,a)))
-    for dummy_ix in range(n**D):
-        x0 = array([x0_coords[i][d_posns[i]] for i in range(D)])
+    for dummy_ix in range(n**D):        
+        x0 = [x0_coords[i][d_posns[i]] for i in range(D)]
         # TEST
         #sol = root(Rhs_wrap, x0, (t,gen.pars), method='hybr',
         #           jac=fprime, options={'xtol':xtol})
@@ -2484,8 +2484,7 @@ def make_distance_to_line_auxfn(linename, fname, p, by_vector_dp=True):
     or a point q, depending on the second input argument.
     Also returns list of parameter names used.
     """
-    assert len(p)==2 and isinstance(p[0], six.string_types) \
-           and isinstance(p[1], six.string_types)
+    assert len(p)==2 and isinstance(p[0], str) and isinstance(p[1], str)
     p0 = linename+'_p_'+p[0]
     p1 = linename+'_p_'+p[1]
     pars = [p0, p1]
@@ -4809,13 +4808,13 @@ class base_n_counter(object):
     def __init__(self, n, d):
         self._maxval = n-1
         self._d = d
-        self.counter = np.zeros((d,), dtype=np.int)
+        self.counter = np.zeros((d,), dtype = int)
 
     def inc(self):
         ix = 0
         while True:
             if ix == self._d:
-                self.counter = np.zeros((self._d,), dtype=np.int)
+                self.counter = np.zeros((self._d,))
                 break
             if self.counter[ix] < self._maxval:
                 self.counter[ix] += 1
@@ -4831,10 +4830,9 @@ class base_n_counter(object):
             raise IndexError("Invalid index for counter")
 
     def reset(self):
-        self.counter = np.zeros((self._d,), dtype=np.int)
+        self.counter = np.zeros((self._d,), dtype = int)
 
     def __str__(self):
         return str(self.counter.tolist())
 
     __repr__ = __str__
-
